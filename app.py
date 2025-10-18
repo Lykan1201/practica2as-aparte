@@ -333,9 +333,7 @@ def eliminarIntegrante():
 @app.route("/proyectosavances")
 @login
 def proyectosavances():
-    if not con.is_connected():
-        con.reconnect()
-
+    con = con_pool.get_connection()
     cursor = con.cursor(dictionary=True)
     # Funcion para inner join demiselctt
     sql = """
@@ -353,9 +351,7 @@ def proyectosavances():
 @login
 def listaProyectos():
     try:
-        if not con.is_connected():
-            con.reconnect()
-
+        con = con_pool.get_connection()
         cursor = con.cursor(dictionary=True)
         sql = """
         SELECT idProyecto, tituloProyecto
@@ -374,9 +370,7 @@ def listaProyectos():
 @app.route("/tbodyProyectosAvances")
 @login
 def tbodyProyectosAvances():
-    if not con.is_connected():
-        con.reconnect()
-
+    con = con_pool.get_connection()
     cursor = con.cursor(dictionary=True)
     sql = """
     SELECT pa.idProyectoAvance,
@@ -400,9 +394,7 @@ def tbodyProyectosAvances():
 @app.route("/proyectoavance", methods=["POST"])
 @login
 def guardarProyectoAvance():
-    if not con.is_connected():
-        con.reconnect()
-
+    con = con_pool.get_connection()
     idProyectoAvance = request.form.get("idProyectoAvance")
     idProyecto       = request.form.get("idProyecto")  
     progreso         = request.form.get("txtProgreso")
@@ -438,9 +430,7 @@ def guardarProyectoAvance():
 @app.route("/proyectoavance/eliminar", methods=["POST"])
 @login
 def eliminarProyectoAvance():
-    if not con.is_connected():
-        con.reconnect()
-
+    con = con_pool.get_connection()
     id = request.form.get("id")
 
     cursor = con.cursor(dictionary=True)
@@ -853,6 +843,7 @@ def obtenerEquipoIntegrante(id):
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
+
 
 
 
